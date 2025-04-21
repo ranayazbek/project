@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>Admin Dashboard</h1>
+                <p id="admin-info">Welcome, Admin</p>
+            </div>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+
+        <h2 class="section-title">User Quiz Scores</h2>
+        <table id="user-scores-table">
+            <thead>
+                <tr id="table-head-row">
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

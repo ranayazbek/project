@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz App - Home</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+  />
+  <link rel="stylesheet" href="homestyle.css" />
+  <script defer src="quiz.js"></script>
+  <script defer src="q.js"></script>
+  <script defer src="home.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="welcome">
+        <h1>Welcome to Quizzy!</h1>
+        <p id="welcome-message">Hello, User!</p>
+      </div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+
+    <div class="content">
+      <h2 class="section-title">Available Quizzes</h2>
+      <div class="quiz-list" id="quiz-list">
+      </div>
+    
+
+    </div>
+  </div>
+</body>
+</html>

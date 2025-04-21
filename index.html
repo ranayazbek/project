@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <title>Login and Registration Form</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet" href="styleindex.css">
+  <script src="index.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+  <div class="container">
+    <input type="checkbox" id="flip">
+    <div class="cover">
+      <div class="front">
+        <img src="quizell.png" alt="">
+        <div class="text">
+          <span class="text-1">Feeling the need <br> to test your information?</span>
+          <span class="text-2">Let's get connected</span>
+        </div>
+      </div>
+      <div class="back">
+        <img src="quizell.png" alt="">
+        <div class="text">
+          <span class="text-1">Complete miles of knowledge <br> with one step</span>
+          <span class="text-2">Let's get started</span>
+        </div>
+      </div>
+    </div>
+    <div class="forms">
+      <div class="form-content">
+        <!-- Login Form -->
+        <div class="loginForm">
+          <div class="title">Login</div>
+          <form id="loginForm">
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input name="email" type="email" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box password-box">
+                <i class="fas fa-lock"></i>
+                <input name="password" type="password" placeholder="Enter your password" required>
+                <i class="fas fa-eye toggle-password"></i>
+              </div>
+              <div class="text"><a href="#">Forgot password?</a></div>
+              <div class="button input-box">
+                <input type="submit" value="Login">
+              </div>
+              <div class="text sign-up-text">Don't have an account? <label for="flip">Sign up now</label></div>
+            </div>
+          </form>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="signupForm">
+          <div class="title">Sign up</div>
+          <form id="signupForm">
+            <div class="input-boxes">
+              <div class="input-box">
+                <i class="fas fa-user"></i>
+                <input name="name" type="text" placeholder="Enter your name" required>
+              </div>
+              <div class="input-box">
+                <i class="fas fa-envelope"></i>
+                <input name="email" type="email" placeholder="Enter your email" required>
+              </div>
+              <div class="input-box password-box">
+                <i class="fas fa-lock"></i>
+                <input name="password" type="password" placeholder="Enter your password" required>
+                <i class="fas fa-eye toggle-password"></i>
+              </div>
+              <div class="button input-box">
+                <input type="submit" value="Sign up">
+              </div>
+              <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
+              <div id="error-message" style="color: red; display: none;"></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
