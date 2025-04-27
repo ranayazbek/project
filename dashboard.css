@@ -20,7 +20,7 @@ body {
     padding: 40px 30px;
     margin: 0 auto;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    border-radius: 16px;
 }
 
 .header {
@@ -48,7 +48,7 @@ body {
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 6px;
+    border-radius: 16px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -56,6 +56,7 @@ body {
 
 .logout-btn:hover {
     background: #5b13b9;
+    transform: scale(1.05);
 }
 
 .section-title {

@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupPasswordVisibilityToggle();
     setupForgotPasswordAlert();
     ensureAdminUser();
+    addAnimations();
 
     if (loginForm) loginForm.addEventListener('submit', handleLogin);
     if (signupForm) signupForm.addEventListener('submit', handleSignup);
@@ -140,5 +141,18 @@ document.addEventListener('DOMContentLoaded', function () {
                 alert("Password reset is not available in this version. Please contact the Admin or sign up with a new account.");
             });
         }
+    }
+
+    function addAnimations() {
+        const elements = document.querySelectorAll('.input-box, .button, .title');
+        elements.forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            setTimeout(() => {
+                el.style.opacity = 1;
+                el.style.transform = 'translateY(0)';
+            }, 200);
+        });
     }
 });

@@ -22,7 +22,7 @@ body {
     background: #fff;
     padding: 30px;
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    border-radius: 16px;
 }
 
 .header {
@@ -45,7 +45,7 @@ body {
     color: white;
     border: none;
     padding: 8px 15px;
-    border-radius: 6px;
+    border-radius: 16px;
     cursor: pointer;
     font-size: 14px;
     transition: all 0.3s ease;
@@ -58,46 +58,47 @@ body {
 
 .back-btn:hover {
     background: #5b13b9;
+    transform: scale(1.05);
 }
 
-.question {
-    margin-bottom: 500px; 
-    padding: 25px;
+.timer {
+    font-size: 20px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.question-block {
+    margin-bottom: 20px;
+    padding: 20px;
     background: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 16px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
-.question h3 {
+.question-block h4 {
     color: #7d2ae8;
     font-size: 18px;
     margin-bottom: 15px;
 }
 
-.options {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.option {
-    padding: 12px 15px;
-    background: #fff;
-    border: 2px solid #ddd;
-    border-radius: 6px;
+.question-block label {
+    display: block;
+    margin: 10px 0;
     cursor: pointer;
-    transition: background 0.3s ease, border 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.option:hover {
-    border-color: #7d2ae8;
-    background: #f5f0ff;
-}
-
-.option.selected {
-    border-color: #7d2ae8;
-    background: #e3d6ff;
+.question-block input[type="radio"] {
+    margin-right: 10px;
 }
 
 .submit-btn {
@@ -105,7 +106,7 @@ body {
     color: white;
     border: none;
     padding: 12px 25px;
-    border-radius: 6px;
+    border-radius: 16px;
     cursor: pointer;
     font-size: 16px;
     font-weight: 500;
@@ -117,73 +118,27 @@ body {
 
 .submit-btn:hover {
     background: #5b13b9;
+    transform: scale(1.05);
 }
 
-.result-box {
-    background: #f9f9f9;
-    padding: 30px;
-    border-radius: 8px;
+.result {
     text-align: center;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    opacity: 0; /* Initially hidden */
-    transform: translateY(20px); /* Start position for animation */
-    transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-/* When the result-box has a class that triggers animation (e.g., after submitting answers) */
-.result-box.show {
-    opacity: 1; /* Fade in */
-    transform: translateY(0); /* Slide in */
-}
-
-.result-box h2 {
-    color: #7d2ae8;
-    margin-bottom: 20px;
-}
-
-#result-message {
-    font-size: 30px;
-    margin-bottom: 25px;
-    line-height: 1.6;
-    font-weight: 500;
-    color: #d0b1e5;
-}
-
-.home-btn {
-    background: #7d2ae8;
-    color: white;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.home-btn:hover {
-    background: #5b13b9;
-}
-
-.correct-answer {
+    margin-top: 20px;
+    font-size: 18px;
     color: #4CAF50;
-    font-weight: 600;
 }
 
-.incorrect-answer {
-    font-weight: 600;
-    color: #f44336;
+/* Progress Bar Styling */
+#progress-bar {
+    height: 10px;
+    width: 0%;
+    background-color: #7d2ae8;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: width 0.5s ease;
 }
 
 @media (max-width: 768px) {
-    body {
-        padding: 20px;
-        align-items: flex-start;
-    }
-
     .container {
         padding: 20px 15px;
     }
@@ -192,30 +147,7 @@ body {
         font-size: 24px;
     }
 
-    .question {
+    .question-block {
         padding: 20px;
-    }
-}
-
-@media (max-width: 480px) {
-    .header h1 {
-        font-size: 20px;
-    }
-
-    .question h3 {
-        font-size: 16px;
-    }
-
-    .option {
-        padding: 10px 12px;
-    }
-
-    .submit-btn {
-        padding: 10px 20px;
-        font-size: 14px;
-    }
-
-    .result-box h2 {
-        font-size: 22px;
     }
 }

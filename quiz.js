@@ -1,35 +1,66 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
-
-    // Get quizId from the URL parameters
     const urlParams = new URLSearchParams(window.location.search);
     const quizId = urlParams.get('quizId');
+    const quizContent = document.getElementById('quiz-content');
+    const timerDisplay = document.getElementById('timer-display');
+
+    let timerInterval;
+
+    // Validate quiz ID
     if (!quizId) {
-        document.getElementById('quiz-content').innerHTML = '<h2>No quiz selected</h2>';
+        quizContent.innerHTML = '<h2>No quiz selected</h2>';
         return;
     }
 
-    // Retrieve quizzes from localStorage
+    // Retrieve quizzes
     const quizzes = JSON.parse(localStorage.getItem('quizzes')) || [];
     const quiz = quizzes.find(q => q.id === quizId);
 
     if (!quiz) {
-        document.getElementById('quiz-content').innerHTML = '<h2>Quiz not found</h2>';
+        quizContent.innerHTML = '<h2>Quiz not found</h2>';
         return;
     }
 
-    // Create and display the quiz content
+    // Retrieve the current user
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (!currentUser) {
+        window.location.href = 'index.html';
+        return;
+    }
+
+    // Retrieve completed quizzes for the current user
+    const scores = JSON.parse(localStorage.getItem('scores')) || {};
+    const userScores = scores[currentUser.email] || {};
+
+    // Check if the quiz has already been completed
+    if (userScores[quizId]) {
+        quizContent.innerHTML = `
+            <h2>${quiz.title} Quiz</h2>
+            <h3>You have already completed this quiz.</h3>
+            <p>Your Score: ${userScores[quizId]}</p>
+        `;
+        return;
+    }
+
+    // Create quiz container
     const container = document.createElement('div');
     container.className = 'quiz-container';
 
+    // Quiz Title
     const title = document.createElement('h2');
-    title.textContent = quiz.title + ' Quiz';
+    title.textContent = `${quiz.title} Quiz`;
     container.appendChild(title);
 
+    // Progress Bar
+    const progressBar = document.createElement('div');
+    progressBar.id = 'progress-bar';
+    container.appendChild(progressBar);
+
+    // Quiz Form
     const form = document.createElement('form');
     form.id = 'quiz-form';
 
-    quiz.questions.slice(0, 3).forEach((question, index) => {
+    quiz.questions.forEach((question, index) => {
         const questionWrapper = document.createElement('div');
         questionWrapper.className = 'question-block';
 
@@ -37,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         qText.textContent = `${index + 1}. ${question.question}`;
         questionWrapper.appendChild(qText);
 
-        question.choices.forEach((option, i) => {
+        question.choices.forEach(option => {
             const label = document.createElement('label');
             label.style.display = 'block';
 
@@ -54,82 +85,79 @@ document.addEventListener('DOMContentLoaded', function () {
         form.appendChild(questionWrapper);
     });
 
+    // Submit Button
     const submitBtn = document.createElement('button');
     submitBtn.textContent = 'Submit';
     submitBtn.type = 'submit';
     submitBtn.className = 'submit-btn';
     form.appendChild(submitBtn);
 
+    // Result Display
     const resultDisplay = document.createElement('div');
     resultDisplay.id = 'result';
     container.appendChild(form);
     container.appendChild(resultDisplay);
 
-    document.getElementById('quiz-content').appendChild(container);
+    quizContent.appendChild(container);
 
-    // Check if user already attended the quiz
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser) {
-        window.location.href = 'index.html';  // Redirect to login page if no current user
-        return;
+    // Timer Initialization
+    let timer = 30;
+
+    function startTimer() {
+        timerDisplay.textContent = `Time Remaining: ${timer} seconds`;
+        timerInterval = setInterval(() => {
+            timer--;
+            if (timer <= 0) {
+                clearInterval(timerInterval);
+                form.submit(); // Auto-submit when timer runs out
+            }
+            timerDisplay.textContent = `Time Remaining: ${timer} seconds`;
+        }, 1000);
     }
 
-    const allScores = JSON.parse(localStorage.getItem('scores')) || {};
-    if (allScores[currentUser.email] && allScores[currentUser.email][quizId]) {
-        resultDisplay.innerHTML = '<h3>You have already completed this quiz.</h3>';
-        form.style.display = 'none';  // Hide the form if quiz is already completed
-        return;
+    // Progress Bar Update
+    function updateProgressBar() {
+        const totalQuestions = quiz.questions.length;
+        const answeredQuestions = Array.from(form.elements)
+            .filter(el => el.checked).length;
+        const progress = (answeredQuestions / totalQuestions) * 100;
+        progressBar.style.width = `${progress}%`;
     }
 
+    // Form Submission Handler
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        let score = 0;
-        const total = Math.min(3, quiz.questions.length);
+        clearInterval(timerInterval);
 
-        quiz.questions.slice(0, 3).forEach((question, index) => {
+        let score = 0;
+
+        // Calculate Score
+        quiz.questions.forEach((question, index) => {
             const selected = form.querySelector(`input[name="question-${index}"]:checked`);
             if (selected && selected.value === question.correctAnswer) {
                 score += question.grade || 1;
             }
         });
 
-        resultDisplay.innerHTML = `<h3>Your Score: ${score}</h3>`;
+        // Display Result
+        resultDisplay.innerHTML = `<h3>Your Score: ${score} / ${quiz.questions.length}</h3>`;
 
-        // Update the user's score in localStorage
-        const users = JSON.parse(localStorage.getItem('users')) || [];
-        const userIndex = users.findIndex(u => u.email === currentUser.email);
-        if (userIndex !== -1) {
-            const user = users[userIndex];
-            if (!user.scores) {
-                user.scores = {};
-            }
-            user.scores[quizId] = score;  // Save score for the current quiz
-            localStorage.setItem('users', JSON.stringify(users));
+        // Save Scores
+        if (!scores[currentUser.email]) {
+            scores[currentUser.email] = {};
         }
+        scores[currentUser.email][quizId] = score;
 
-        // Update the scores in localStorage (for quiz history)
-        if (!allScores[currentUser.email]) {
-            allScores[currentUser.email] = {};
-        }
-        allScores[currentUser.email][quiz.id] = {
-            title: quiz.title,
-            score: score,
-            total: total
-        };
-        localStorage.setItem('scores', JSON.stringify(allScores));
+        localStorage.setItem('scores', JSON.stringify(scores));
 
-     
-
-        // Store completed quiz info
-        let completedQuizzes = JSON.parse(localStorage.getItem('completedQuizzes')) || [];
-        if (!completedQuizzes.includes(quizId)) {
-            completedQuizzes.push(quizId);
-            localStorage.setItem('completedQuizzes', JSON.stringify(completedQuizzes));
-        }
-
-        // Redirect to home page after submission
-        setTimeout(function () {
+        // Redirect to Home Page
+        setTimeout(() => {
             window.location.href = 'home.html';
-        }, 2000);  // Delay the redirect to give the user time to see the score
+        }, 2000);
     });
+
+    // Update Progress Bar on Change
+    form.addEventListener('change', updateProgressBar);
+
+    startTimer();
 });
